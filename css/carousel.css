@@ -138,24 +138,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 .carousel-indicator {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  gap: 8px;
-  z-index: 10;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 10px;
 }
 
-.carousel-indicator span {
-  width: 8px;
-  height: 8px;
-  background: #aaa;
+.dot {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  opacity: 0.5;
+  background-color: #ccc;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.carousel-indicator span.active {
-  background: #ffd700;
-  opacity: 1;
+.dot.active {
+  background-color: #ffd700;
 }
