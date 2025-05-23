@@ -143,16 +143,3 @@ document.addEventListener('DOMContentLoaded', function() {
   margin-top: 15px;
   gap: 10px;
 }
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ccc;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.dot.active {
-  background-color: #ffd700;
-}
