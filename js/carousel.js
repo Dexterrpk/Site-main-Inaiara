@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function goToSlide(index) {
         const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
         currentIndex = Math.max(0, Math.min(index, maxIndex));
-        updateCarousel();
+        
     }
     
     // Ir para o próximo slide
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
         if (currentIndex < maxIndex) {
             currentIndex++;
-            updateCarousel();
+            
         }
     }
     
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function prevSlide() {
         if (currentIndex > 0) {
             currentIndex--;
-            updateCarousel();
+            
         }
     }
     
