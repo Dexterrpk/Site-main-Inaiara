@@ -1376,27 +1376,6 @@ footer {
         min-width: 100%;
     }
 }
-/* ---------- Depoimentos: stack no mobile ---------- */
-@media (max-width: 768px) {
-  .testimonials-container{
-    flex-direction: column;   /* empilha os cards */
-    overflow-x: visible;      /* remove a rolagem horizontal */
-    gap: 1.5rem;              /* espaço entre os cards */
-    padding-bottom: 0;        /* tira a folga da barra de rolagem */
-  }
-
-  .testimonial-card{
-    width: 100%;              /* carta ocupa toda a largura */
-    max-width: none;
-    margin: 0 auto;
-  }
-
-  /* setinhas e bolinhas não são necessárias quando mostra tudo */
-  .testimonial-controls{
-    display: none;
-  }
-}
-
 
 @media (max-width: 576px) {
     .section {
