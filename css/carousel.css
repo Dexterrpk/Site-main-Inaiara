@@ -137,3 +137,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+.carousel-indicator {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.carousel-indicator span {
+  width: 8px;
+  height: 8px;
+  background: #aaa;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.carousel-indicator span.active {
+  background: #ffd700;
+  opacity: 1;
+}
