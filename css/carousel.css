@@ -1,0 +1,151 @@
+/* Estilos para o carrossel de depoimentos */
+.testimonials-container {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.5rem 0.5rem;
+    margin-bottom: 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(218, 165, 32, 0.5) rgba(0, 0, 0, 0.2);
+}
+
+.testimonials-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.testimonials-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.testimonials-container::-webkit-scrollbar-thumb {
+    background: rgba(218, 165, 32, 0.5);
+    border-radius: 10px;
+}
+
+.testimonials-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(218, 165, 32, 0.7);
+}
+
+.testimonial-card {
+    flex: 0 0 auto;
+    width: 300px;
+    min-width: 300px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    scroll-snap-align: center;
+    transform: translateY(0);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border-color: rgba(218, 165, 32, 0.4);
+}
+
+/* Controles do carrossel */
+.testimonial-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.testimonial-arrow {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    color: #DAA520;
+    font-size: 1.2rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.testimonial-arrow:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: #DAA520;
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.testimonial-dots {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(218, 165, 32, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active, .dot:hover {
+    background: #DAA520;
+    transform: scale(1.2);
+}
+
+/* Responsividade do carrossel */
+@media (max-width: 992px) {
+    .testimonial-card {
+        width: 280px;
+        min-width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonial-card {
+        width: 260px;
+        min-width: 260px;
+        padding: 1.8rem;
+    }
+    
+    .testimonial-controls {
+        gap: 1rem;
+    }
+    
+    .testimonial-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .testimonials-container {
+        gap: 1.5rem;
+        padding: 1rem 0.5rem;
+    }
+    
+    .testimonial-card {
+        width: 240px;
+        min-width: 240px;
+        padding: 1.5rem;
+    }
+    
+    .testimonial-quote {
+        font-size: 1.5rem;
+    }
+    
+    .testimonial-text {
+        font-size: 1rem;
+    }
+}

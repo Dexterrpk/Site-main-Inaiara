@@ -1,0 +1,139 @@
+// Função para melhorar o carrossel de depoimentos
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos do carrossel
+    const testimonialsContainer = document.querySelector('.testimonials-container');
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+    const prevBtn = document.querySelector('.testimonial-arrow.prev');
+    const nextBtn = document.querySelector('.testimonial-arrow.next');
+    const dotsContainer = document.querySelector('.testimonial-dots');
+    
+    // Configuração inicial
+    let currentIndex = 0;
+    let cardWidth = 0;
+    let visibleCards = 0;
+    
+    // Criar dots baseado no número de cards
+    function createDots() {
+        // Limpar dots existentes
+        dotsContainer.innerHTML = '';
+        
+        // Determinar quantos dots são necessários (baseado em quantos "slides" temos)
+        const totalSlides = Math.ceil(testimonialCards.length / visibleCards);
+        
+        // Criar dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            
+            // Adicionar evento de clique
+            dot.addEventListener('click', () => {
+                goToSlide(i);
+            });
+            
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    // Configurar o carrossel baseado no tamanho da tela
+    function setupCarousel() {
+        // Determinar largura do card e quantos cards são visíveis
+        cardWidth = testimonialCards[0].offsetWidth + parseInt(window.getComputedStyle(testimonialCards[0]).marginRight);
+        
+        // Determinar quantos cards são visíveis baseado no tamanho da tela
+        if (window.innerWidth >= 1200) {
+            visibleCards = 3;
+        } else if (window.innerWidth >= 768) {
+            visibleCards = 2;
+        } else {
+            visibleCards = 1;
+        }
+        
+        // Criar dots
+        createDots();
+        
+        // Resetar posição
+        currentIndex = 0;
+        updateCarousel();
+    }
+    
+    // Atualizar a posição do carrossel
+    function updateCarousel() {
+        // Calcular a posição de scroll
+        const scrollPosition = -currentIndex * cardWidth * visibleCards;
+        
+        // Aplicar transformação com animação suave
+        testimonialsContainer.style.transition = 'transform 0.5s ease';
+        testimonialsContainer.style.transform = `translateX(${scrollPosition}px)`;
+        
+        // Atualizar dots ativos
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+        
+        // Habilitar/desabilitar botões de navegação
+        const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        nextBtn.style.opacity = currentIndex === maxIndex ? '0.5' : '1';
+    }
+    
+    // Ir para um slide específico
+    function goToSlide(index) {
+        const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateCarousel();
+    }
+    
+    // Ir para o próximo slide
+    function nextSlide() {
+        const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+        if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+        }
+    }
+    
+    // Ir para o slide anterior
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
+    }
+    
+    // Adicionar eventos aos botões
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    
+    // Inicializar carrossel
+    setupCarousel();
+    
+    // Atualizar carrossel quando a janela for redimensionada
+    window.addEventListener('resize', setupCarousel);
+    
+    // Adicionar suporte para gestos de swipe em dispositivos móveis
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    testimonialsContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    testimonialsContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50; // Mínimo de pixels para considerar um swipe
+        
+        if (touchEndX < touchStartX - swipeThreshold) {
+            // Swipe para a esquerda - próximo slide
+            nextSlide();
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+            // Swipe para a direita - slide anterior
+            prevSlide();
+        }
+    }
+});
