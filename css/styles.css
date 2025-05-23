@@ -1501,12 +1501,3 @@ footer {
     background: radial-gradient(circle at top right, rgba(218, 165, 32, 0.1), transparent 70%);
     pointer-events: none;
 }
-
-.site-footer {
-  text-align: center;
-  padding: 20px;
-  font-size: 14px;
-  color: #aaa;
-  background-color: #111; /* ou algo que combine com o seu site */
-  margin-top: 50px;
-}
