@@ -136,15 +136,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
-
-function currentSlide(index) {
-  const slides = document.querySelectorAll(".slide"); // ou sua classe real de slide
-  const dots = document.querySelectorAll(".dot");
-
-  slides.forEach((slide, i) => {
-    slide.style.display = i === index ? "block" : "none";
-  });
-
-  dots.forEach(dot => dot.classList.remove("active"));
-  dots[index].classList.add("active");
-}
