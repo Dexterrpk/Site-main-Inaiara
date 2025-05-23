@@ -1,151 +1,116 @@
-/* Estilos para o carrossel de depoimentos */
-.testimonials-container {
-    display: flex;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 1.5rem 0.5rem;
-    margin-bottom: 1.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(218, 165, 32, 0.5) rgba(0, 0, 0, 0.2);
-}
-
-.testimonials-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.testimonials-container::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-}
-
-.testimonials-container::-webkit-scrollbar-thumb {
-    background: rgba(218, 165, 32, 0.5);
-    border-radius: 10px;
-}
-
-.testimonials-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(218, 165, 32, 0.7);
-}
-
-.testimonial-card {
-    flex: 0 0 auto;
-    width: 300px;
-    min-width: 300px;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(218, 165, 32, 0.2);
-    transition: all 0.3s ease;
-    position: relative;
-    scroll-snap-align: center;
-    transform: translateY(0);
-}
-
-.testimonial-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    border-color: rgba(218, 165, 32, 0.4);
-}
-
-/* Controles do carrossel */
-.testimonial-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.testimonial-arrow {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(218, 165, 32, 0.3);
-    color: #DAA520;
-    font-size: 1.2rem;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.testimonial-arrow:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: #DAA520;
-    transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.testimonial-dots {
-    display: flex;
-    gap: 0.8rem;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(218, 165, 32, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.dot.active, .dot:hover {
-    background: #DAA520;
-    transform: scale(1.2);
-}
-
-/* Responsividade do carrossel */
-@media (max-width: 992px) {
-    .testimonial-card {
-        width: 280px;
-        min-width: 280px;
-    }
-}
-
-@media (max-width: 768px) {
-    .testimonial-card {
-        width: 260px;
-        min-width: 260px;
-        padding: 1.8rem;
+// Função para melhorar o carrossel de depoimentos
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos do carrossel
+    const testimonialsContainer = document.querySelector('.testimonials-container');
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+                
+    // Configuração inicial
+    let currentIndex = 0;
+    let cardWidth = 0;
+    let visibleCards = 0;
+    
+    // Criar dots baseado no número de cards
+        }
+    
+    // Configurar o carrossel baseado no tamanho da tela
+    function setupCarousel() {
+        // Determinar largura do card e quantos cards são visíveis
+        cardWidth = testimonialCards[0].offsetWidth + parseInt(window.getComputedStyle(testimonialCards[0]).marginRight);
+        
+        // Determinar quantos cards são visíveis baseado no tamanho da tela
+        if (window.innerWidth >= 1200) {
+            visibleCards = 3;
+        } else if (window.innerWidth >= 768) {
+            visibleCards = 2;
+        } else {
+            visibleCards = 1;
+        }
+        
+        // Criar dots
+        createDots();
+        
+        // Resetar posição
+        currentIndex = 0;
+        updateCarousel();
     }
     
-    .testimonial-controls {
-        gap: 1rem;
+    // Atualizar a posição do carrossel
+    function updateCarousel() {
+        // Calcular a posição de scroll
+        const scrollPosition = -currentIndex * cardWidth * visibleCards;
+        
+        // Aplicar transformação com animação suave
+        testimonialsContainer.style.transition = 'transform 0.5s ease';
+        testimonialsContainer.style.transform = `translateX(${scrollPosition}px)`;
+        
+        // Atualizar dots ativos
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+        
+        // Habilitar/desabilitar botões de navegação
+        const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        nextBtn.style.opacity = currentIndex === maxIndex ? '0.5' : '1';
     }
     
-    .testimonial-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .testimonials-container {
-        gap: 1.5rem;
-        padding: 1rem 0.5rem;
+    // Ir para um slide específico
+    function goToSlide(index) {
+        const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateCarousel();
     }
     
-    .testimonial-card {
-        width: 240px;
-        min-width: 240px;
-        padding: 1.5rem;
+    // Ir para o próximo slide
+    function nextSlide() {
+        const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+        if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+        }
     }
     
-    .testimonial-quote {
-        font-size: 1.5rem;
+    // Ir para o slide anterior
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
     }
     
-    .testimonial-text {
-        font-size: 1rem;
+    // Adicionar eventos aos botões
+    
+    
+    
+    // Inicializar carrossel
+    setupCarousel();
+    
+    // Atualizar carrossel quando a janela for redimensionada
+    window.addEventListener('resize', setupCarousel);
+    
+    // Adicionar suporte para gestos de swipe em dispositivos móveis
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    testimonialsContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    testimonialsContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50; // Mínimo de pixels para considerar um swipe
+        
+        if (touchEndX < touchStartX - swipeThreshold) {
+            // Swipe para a esquerda - próximo slide
+            nextSlide();
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+            // Swipe para a direita - slide anterior
+            prevSlide();
+        }
     }
-}
+});
