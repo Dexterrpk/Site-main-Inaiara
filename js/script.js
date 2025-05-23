@@ -166,8 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentSlide = Math.max(0, Math.min(slideIndex, maxSlides - 1));
             
             // Mover o container
-            testimonialContainer.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
-            testimonialContainer.style.transition = 'transform 0.5s ease-out';
+        
             
             // Atualizar dots
             dots.forEach((dot, index) => {
