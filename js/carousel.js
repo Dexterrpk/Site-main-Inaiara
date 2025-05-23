@@ -63,8 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrollPosition = -currentIndex * cardWidth * visibleCards;
         
         // Aplicar transformação com animação suave
-        testimonialsContainer.style.transition = 'transform 0.5s ease';
-        testimonialsContainer.style.transform = `translateX(${scrollPosition}px)`;
+
         
         // Atualizar dots ativos
         const dots = document.querySelectorAll('.dot');
