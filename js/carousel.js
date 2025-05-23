@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (window.innerWidth >= 768) {
             visibleCards = 2;
         } else {
-            visibleCards = 1;
+            visibleCards = 2;
         }
         
         // Criar dots
