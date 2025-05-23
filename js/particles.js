@@ -11,7 +11,7 @@ class MysticalParticles {
             minOpacity: 0.2,
             maxOpacity: 0.7,
             minSpeed: 0.5,
-            maxSpeed: 1.5,
+            maxSpeed: 0.8,
             connectParticles: true,
             connectDistance: 150,
             responsive: [
