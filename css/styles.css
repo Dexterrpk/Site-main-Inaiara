@@ -1501,3 +1501,8 @@ footer {
     background: radial-gradient(circle at top right, rgba(218, 165, 32, 0.1), transparent 70%);
     pointer-events: none;
 }
+.about-image-img {
+    width: 100%; /* Ajuste conforme necessário */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 50%; /* Para imagem circular, se desejado */
+}
