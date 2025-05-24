@@ -189,9 +189,9 @@ document.addEventListener('DOMContentLoaded', function() {
         function moveToSlide(slideIndex) {
             currentSlide = Math.max(0, Math.min(slideIndex, maxSlides));
             
-            // Mover o container
-           // const translateX = -currentSlide * slideWidth;
-          //  testimonialContainer.style.transform = `translateX(${translateX}px)`;
+             Mover o container
+            const translateX = -currentSlide * slideWidth;
+            testimonialContainer.style.transform = `translateX(${translateX}px)`;
             
             // Atualizar indicadores se existirem
             updateSlideIndicators();
@@ -225,13 +225,13 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         // Auto-play
-        function startInterval() {
-            if (maxSlides > 0) {
-                slideInterval = setInterval(() => {
-                    window.nextTestimonialSlide();
-                }, 5000);
-            }
-        }
+       // function startInterval() {
+         //   if (maxSlides > 0) {
+          //      slideInterval = setInterval(() => {
+         //           window.nextTestimonialSlide();
+       //         }, 5000);
+       //     }
+      //  }
         
         function resetInterval() {
             clearInterval(slideInterval);
