@@ -1145,7 +1145,7 @@ footer {
     justify-content: center;
     gap: 1.0rem;
     margin-bottom: 1rem;
-    line-height: 0.5;
+    height: 0.8;
 }
 /* Botão de voltar ao topo */
 .scroll-top {
