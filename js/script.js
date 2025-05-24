@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentSlide = Math.max(0, Math.min(slideIndex, maxSlides));
             
             // Mover o container
-            const translateX = -currentSlide * slideWidth;
-            testimonialContainer.style.transform = `translateX(${translateX}px)`;
+           // const translateX = -currentSlide * slideWidth;
+          //  testimonialContainer.style.transform = `translateX(${translateX}px)`;
             
             // Atualizar indicadores se existirem
             updateSlideIndicators();
