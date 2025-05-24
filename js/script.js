@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Event listeners para pause/resume removidos (auto-play desabilitado)
-        /*
+        
         // Pausar auto-play quando mouse estiver sobre os depoimentos
         testimonialContainer.addEventListener('mouseenter', () => {
             clearInterval(slideInterval);
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
         testimonialContainer.addEventListener('mouseleave', () => {
             startInterval();
         });
-        */
+        
     }
     
     // Função para adicionar controles de depoimentos
