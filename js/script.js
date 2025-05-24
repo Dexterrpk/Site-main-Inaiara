@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateIndicator();
         
         // Código para auto-update do indicador removido (auto-play desabilitado)
-        /*
+        
         // Atualizar indicador quando slides mudarem automaticamente
         const originalNextSlide = window.nextTestimonialSlide;
         if (originalNextSlide) {
@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(updateIndicator, 100);
             };
         }
-        */
+        
     }
     
     // Função para criar estrelas adicionais
