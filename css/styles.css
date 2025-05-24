@@ -1140,7 +1140,12 @@ footer {
     font-size: 0.9rem;
     color: #888;
 }
-
+.footer-site {
+    display: flex;
+    justify-content: center;
+    gap: 1.0rem;
+    margin-bottom: 1rem;
+}
 /* Botão de voltar ao topo */
 .scroll-top {
     position: fixed;
