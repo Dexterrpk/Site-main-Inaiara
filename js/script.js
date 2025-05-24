@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (maxSlides > 0) {
                 slideInterval = setInterval(() => {
                     window.nextTestimonialSlide();
-                }, 5000);
+                }, 50000);
             }
             
         }
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Inicializar slider
         setupSlider();
-        // startInterval(); // DESABILITADO - auto-play removido
+        startInterval(); // DESABILITADO - auto-play removido
         
         // Recalcular em caso de redimensionamento
         window.addEventListener('resize', () => {
