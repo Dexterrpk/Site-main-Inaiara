@@ -237,13 +237,13 @@ document.addEventListener('DOMContentLoaded', function() {
         function startInterval() {
             // Função vazia - auto-play desabilitado
             // Para reativar, descomente as linhas abaixo:
-            /*
+            
             if (maxSlides > 0) {
                 slideInterval = setInterval(() => {
                     window.nextTestimonialSlide();
                 }, 5000);
             }
-            */
+            
         }
         
         function resetInterval() {
