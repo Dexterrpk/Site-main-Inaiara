@@ -1141,11 +1141,12 @@ footer {
     color: #888;
 }
 .footer-site {
-    display: flex;
-    justify-content: center;
-    gap: 1.0rem;
-    margin-bottom: 1rem;
-    height: 0.8;
+  background-color: #f2f2f2;
+  padding: 2px;
+  text-align: center;
+  height: 1px; /* Define a altura do footer como 80 pixels */
+  width: 100%; /* O footer ocupa toda a largura do pai */
+
 }
 /* Botão de voltar ao topo */
 .scroll-top {
