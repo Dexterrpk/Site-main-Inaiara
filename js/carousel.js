@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calcular a posição de scroll
         const scrollPosition = -currentIndex * cardWidth * visibleCards;
         
+        
+        testimonialsContainer.style.transform = `translateX(${ -currentIndex * cardWidth * visibleCards }px)`;
+testimonialsContainer.style.transition = "transform 0.5s ease";
+        
         // Aplicar transformação com animação suave
 
         
@@ -70,6 +74,36 @@ document.addEventListener('DOMContentLoaded', function() {
         dots.forEach((dot, index) => {
             dot.classList.toggle('active', index === currentIndex);
         });
+
+
+
+
+
+        
+
+        function goToSlide(index) {
+    const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+    currentIndex = Math.max(0, Math.min(index, maxIndex));
+    updateCarousel();
+}
+
+function nextSlide() {
+    const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
+    if (currentIndex < maxIndex) {
+        currentIndex++;
+        updateCarousel();
+    }
+}
+
+function prevSlide() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+    }
+}
+
+
+
         
         // Habilitar/desabilitar botões de navegação
         const maxIndex = Math.ceil(testimonialCards.length / visibleCards) - 1;
