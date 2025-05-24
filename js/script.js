@@ -248,8 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function resetInterval() {
             // Função vazia - auto-play desabilitado
-            // clearInterval(slideInterval);
-            // startInterval();
+             clearInterval(slideInterval);
+             startInterval();
         }
         
         // Inicializar slider
