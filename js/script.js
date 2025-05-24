@@ -89,6 +89,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 current = 'home';
             }
             
+            // Correção especial para contato - detectar quando está próximo da seção contato
+            const contatoSection = document.getElementById('contato');
+            if (contatoSection) {
+                const contatoTop = contatoSection.offsetTop - 200;
+                if (window.pageYOffset >= contatoTop) {
+                    current = 'contato';
+                }
+            }
+            
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 const linkHref = link.getAttribute('href').substring(1); // Remove o #
@@ -189,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function moveToSlide(slideIndex) {
             currentSlide = Math.max(0, Math.min(slideIndex, maxSlides));
             
-             Mover o container
+            // Mover o container
             const translateX = -currentSlide * slideWidth;
             testimonialContainer.style.transform = `translateX(${translateX}px)`;
             
@@ -224,29 +233,36 @@ document.addEventListener('DOMContentLoaded', function() {
             resetInterval();
         };
         
-        // Auto-play
-       // function startInterval() {
-         //   if (maxSlides > 0) {
-          //      slideInterval = setInterval(() => {
-         //           window.nextTestimonialSlide();
-       //         }, 5000);
-       //     }
-      //  }
+        // Auto-play DESABILITADO - slides passam apenas com clique
+        function startInterval() {
+            // Função vazia - auto-play desabilitado
+            // Para reativar, descomente as linhas abaixo:
+            /*
+            if (maxSlides > 0) {
+                slideInterval = setInterval(() => {
+                    window.nextTestimonialSlide();
+                }, 5000);
+            }
+            */
+        }
         
         function resetInterval() {
-            clearInterval(slideInterval);
-            startInterval();
+            // Função vazia - auto-play desabilitado
+            // clearInterval(slideInterval);
+            // startInterval();
         }
         
         // Inicializar slider
         setupSlider();
-        startInterval();
+        // startInterval(); // DESABILITADO - auto-play removido
         
         // Recalcular em caso de redimensionamento
         window.addEventListener('resize', () => {
             setupSlider();
         });
         
+        // Event listeners para pause/resume removidos (auto-play desabilitado)
+        /*
         // Pausar auto-play quando mouse estiver sobre os depoimentos
         testimonialContainer.addEventListener('mouseenter', () => {
             clearInterval(slideInterval);
@@ -255,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
         testimonialContainer.addEventListener('mouseleave', () => {
             startInterval();
         });
+        */
     }
     
     // Função para adicionar controles de depoimentos
@@ -365,6 +382,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Inicializar indicador
         updateIndicator();
         
+        // Código para auto-update do indicador removido (auto-play desabilitado)
+        /*
         // Atualizar indicador quando slides mudarem automaticamente
         const originalNextSlide = window.nextTestimonialSlide;
         if (originalNextSlide) {
@@ -373,6 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(updateIndicator, 100);
             };
         }
+        */
     }
     
     // Função para criar estrelas adicionais
