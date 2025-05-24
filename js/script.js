@@ -8,23 +8,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const scrollTopBtn = document.querySelector('.scroll-top');
     const sections = document.querySelectorAll('.section');
     const testimonialCards = document.querySelectorAll('.testimonial-card');
-    const prevBtn = document.querySelector('.testimonial-arrow.prev');
-    const nextBtn = document.querySelector('.testimonial-arrow.next');
-    const dots = document.querySelectorAll('.dot');
-    const testimonialForm = document.getElementById('testimonialForm');
     const newTestimonialsContainer = document.getElementById('newTestimonials');
     
     // Variáveis para controle do carrossel
     let currentSlide = 0;
     let slideWidth = 0;
     let slideInterval;
+    let maxSlides = 0;
     
     // Inicialização
     initAnimations();
     initNavbar();
     initScrollEvents();
     initTestimonialSlider();
-    initTestimonialForm();
+    addTestimonialControls();
     createStars();
     initParallaxEffect();
     
@@ -75,21 +72,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
         
-        // Destacar link ativo ao rolar
+        // Destacar link ativo ao rolar - CORRIGIDO
         window.addEventListener('scroll', () => {
             let current = '';
             
             sections.forEach(section => {
                 const sectionTop = section.offsetTop - 100;
                 const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop) {
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
                     current = section.getAttribute('id');
                 }
             });
             
+            // Se não há seção atual detectada, manter a primeira como ativa
+            if (!current && window.pageYOffset < 100) {
+                current = 'home';
+            }
+            
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
+                const linkHref = link.getAttribute('href').substring(1); // Remove o #
+                if (linkHref === current) {
                     link.classList.add('active');
                 }
             });
@@ -109,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Rolagem suave para links de âncora
+        // Rolagem suave para links de âncora - MELHORADO
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -118,10 +121,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 const targetElement = document.querySelector(targetId);
                 
                 if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 70;
                     window.scrollTo({
-                        top: targetElement.offsetTop - 70,
+                        top: offsetTop,
                         behavior: 'smooth'
                     });
+                    
+                    // Force update active nav link
+                    setTimeout(() => {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        this.classList.add('active');
+                    }, 100);
                 }
             });
         });
@@ -139,21 +149,37 @@ document.addEventListener('DOMContentLoaded', function() {
     function initTestimonialSlider() {
         const testimonialContainer = document.querySelector('.testimonials-container');
         
+        if (!testimonialContainer || testimonialCards.length === 0) return;
+        
         // Configuração inicial
         function setupSlider() {
             // Determinar largura do slide com base no tamanho da tela
+            const containerWidth = testimonialContainer.offsetWidth;
+            let visibleSlides;
+            
             if (window.innerWidth >= 1200) {
-                slideWidth = testimonialContainer.offsetWidth / 3;
+                visibleSlides = 3;
+                slideWidth = containerWidth / 3;
             } else if (window.innerWidth >= 768) {
-                slideWidth = testimonialContainer.offsetWidth / 2;
+                visibleSlides = 2;
+                slideWidth = containerWidth / 2;
             } else {
-                slideWidth = testimonialContainer.offsetWidth;
+                visibleSlides = 1;
+                slideWidth = containerWidth;
             }
+            
+            // Calcular número máximo de slides
+            maxSlides = Math.max(0, testimonialCards.length - visibleSlides);
             
             // Aplicar largura aos cards
             testimonialCards.forEach(card => {
                 card.style.flex = `0 0 ${slideWidth}px`;
             });
+            
+            // Ajustar currentSlide se necessário
+            if (currentSlide > maxSlides) {
+                currentSlide = maxSlides;
+            }
             
             // Mover para o slide atual
             moveToSlide(currentSlide);
@@ -161,43 +187,50 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Função para mover para um slide específico
         function moveToSlide(slideIndex) {
-            // Limitar o índice ao número de slides disponíveis
-            const maxSlides = testimonialCards.length - (window.innerWidth >= 1200 ? 2 : window.innerWidth >= 768 ? 1 : 0);
-            currentSlide = Math.max(0, Math.min(slideIndex, maxSlides - 1));
+            currentSlide = Math.max(0, Math.min(slideIndex, maxSlides));
             
             // Mover o container
-        
+            const translateX = -currentSlide * slideWidth;
+            testimonialContainer.style.transform = `translateX(${translateX}px)`;
             
-            // Atualizar dots
+            // Atualizar indicadores se existirem
+            updateSlideIndicators();
+        }
+        
+        // Função para atualizar indicadores visuais
+        function updateSlideIndicators() {
+            const dots = document.querySelectorAll('.testimonial-dot');
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
         }
         
-        // Event listeners para controles
-        prevBtn.addEventListener('click', () => {
-            moveToSlide(currentSlide - 1);
+        // Função pública para controlar slides
+        window.nextTestimonialSlide = function() {
+            if (currentSlide < maxSlides) {
+                moveToSlide(currentSlide + 1);
+            } else {
+                moveToSlide(0); // Volta para o primeiro
+            }
             resetInterval();
-        });
+        };
         
-        nextBtn.addEventListener('click', () => {
-            moveToSlide(currentSlide + 1);
+        window.prevTestimonialSlide = function() {
+            if (currentSlide > 0) {
+                moveToSlide(currentSlide - 1);
+            } else {
+                moveToSlide(maxSlides); // Vai para o último
+            }
             resetInterval();
-        });
-        
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                moveToSlide(index);
-                resetInterval();
-            });
-        });
+        };
         
         // Auto-play
         function startInterval() {
-            slideInterval = setInterval(() => {
-                const maxSlides = testimonialCards.length - (window.innerWidth >= 1200 ? 2 : window.innerWidth >= 768 ? 1 : 0);
-                moveToSlide(currentSlide === maxSlides - 1 ? 0 : currentSlide + 1);
-            }, 5000);
+            if (maxSlides > 0) {
+                slideInterval = setInterval(() => {
+                    window.nextTestimonialSlide();
+                }, 5000);
+            }
         }
         
         function resetInterval() {
@@ -213,91 +246,140 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('resize', () => {
             setupSlider();
         });
+        
+        // Pausar auto-play quando mouse estiver sobre os depoimentos
+        testimonialContainer.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        testimonialContainer.addEventListener('mouseleave', () => {
+            startInterval();
+        });
     }
     
-    // Função para inicializar o formulário de depoimentos
-    function initTestimonialForm() {
-        if (testimonialForm) {
-            testimonialForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Obter valores do formulário
-                const name = document.getElementById('name').value;
-                const message = document.getElementById('message').value;
-                
-                // Criar novo depoimento
-                const newTestimonial = createTestimonialCard(name, message);
-                
-                // Adicionar ao container de novos depoimentos
-                newTestimonialsContainer.appendChild(newTestimonial);
-                
-                // Animar entrada do novo depoimento
-                setTimeout(() => {
-                    newTestimonial.style.opacity = '1';
-                    newTestimonial.style.transform = 'translateY(0)';
-                }, 100);
-                
-                // Limpar formulário
-                testimonialForm.reset();
-                
-                // Rolar suavemente até o novo depoimento
-                setTimeout(() => {
-                    newTestimonial.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-            });
+    // Função para adicionar controles de depoimentos
+    function addTestimonialControls() {
+        const testimonialsSection = document.getElementById('testimonials');
+        if (!testimonialsSection) return;
+        
+        // Criar container para os controles
+        const controlsContainer = document.createElement('div');
+        controlsContainer.className = 'testimonial-controls';
+        controlsContainer.style.cssText = `
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        `;
+        
+        // Botão anterior
+        const prevButton = document.createElement('button');
+        prevButton.className = 'testimonial-nav-btn prev-btn';
+        prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevButton.style.cssText = `
+            background: linear-gradient(135deg, #d4af37, #f4e4bc);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: #1a1a1a;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+        
+        // Botão próximo
+        const nextButton = document.createElement('button');
+        nextButton.className = 'testimonial-nav-btn next-btn';
+        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextButton.style.cssText = prevButton.style.cssText;
+        
+        // Indicador de slide atual
+        const slideIndicator = document.createElement('div');
+        slideIndicator.className = 'slide-indicator';
+        slideIndicator.style.cssText = `
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            border-radius: 25px;
+            padding: 8px 16px;
+            color: #d4af37;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            min-width: 80px;
+            text-align: center;
+        `;
+        
+        // Função para atualizar o indicador
+        function updateIndicator() {
+            const total = testimonialCards.length;
+            const current = currentSlide + 1;
+            slideIndicator.textContent = `${current} / ${total}`;
         }
-    }
-    
-    // Função para criar um novo card de depoimento
-    function createTestimonialCard(name, message) {
-        // Criar elementos
-        const card = document.createElement('div');
-        card.className = 'testimonial-card';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.5s ease';
         
-        const quoteDiv = document.createElement('div');
-        quoteDiv.className = 'testimonial-quote';
-        quoteDiv.innerHTML = '<i class="fas fa-quote-left"></i>';
+        // Event listeners
+        prevButton.addEventListener('click', () => {
+            if (typeof window.prevTestimonialSlide === 'function') {
+                window.prevTestimonialSlide();
+                updateIndicator();
+            }
+        });
         
-        const textP = document.createElement('p');
-        textP.className = 'testimonial-text';
-        textP.textContent = message;
+        nextButton.addEventListener('click', () => {
+            if (typeof window.nextTestimonialSlide === 'function') {
+                window.nextTestimonialSlide();
+                updateIndicator();
+            }
+        });
         
-        const authorDiv = document.createElement('div');
-        authorDiv.className = 'testimonial-author';
+        // Efeitos hover
+        [prevButton, nextButton].forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'scale(1.1) translateY(-2px)';
+                btn.style.boxShadow = '0 6px 20px rgba(212, 175, 55, 0.4)';
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1) translateY(0)';
+                btn.style.boxShadow = '0 4px 15px rgba(212, 175, 55, 0.3)';
+            });
+        });
         
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = 'testimonial-avatar';
-        avatarDiv.innerHTML = '<i class="fas fa-user-circle"></i>';
+        // Montar controles
+        controlsContainer.appendChild(prevButton);
+        controlsContainer.appendChild(slideIndicator);
+        controlsContainer.appendChild(nextButton);
         
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'testimonial-info';
+        // Inserir após a seção de depoimentos
+        const testimonialsContainer = testimonialsSection.querySelector('.testimonials-container');
+        if (testimonialsContainer && testimonialsContainer.parentNode) {
+            testimonialsContainer.parentNode.insertBefore(controlsContainer, testimonialsContainer.nextSibling);
+        }
         
-        const nameH4 = document.createElement('h4');
-        nameH4.textContent = name;
+        // Inicializar indicador
+        updateIndicator();
         
-        const typeP = document.createElement('p');
-        typeP.textContent = 'Comentário recente';
-        
-        // Montar estrutura
-        infoDiv.appendChild(nameH4);
-        infoDiv.appendChild(typeP);
-        
-        authorDiv.appendChild(avatarDiv);
-        authorDiv.appendChild(infoDiv);
-        
-        card.appendChild(quoteDiv);
-        card.appendChild(textP);
-        card.appendChild(authorDiv);
-        
-        return card;
+        // Atualizar indicador quando slides mudarem automaticamente
+        const originalNextSlide = window.nextTestimonialSlide;
+        if (originalNextSlide) {
+            window.nextTestimonialSlide = function() {
+                originalNextSlide();
+                setTimeout(updateIndicator, 100);
+            };
+        }
     }
     
     // Função para criar estrelas adicionais
     function createStars() {
         const mysticalElements = document.querySelector('.mystical-elements');
+        if (!mysticalElements) return;
+        
         const starsCount = 15;
         
         for (let i = 0; i < starsCount; i++) {
