@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inaiara Anjos | Taróloga</title>
 
-    <!-- 🔥 META PIXEL COMPLETO -->
+    <!-- 🔥 META PIXEL COMPLETO (ID: 968048132755163) -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -17,19 +17,47 @@
     'https://connect.facebook.net/en_US/fbevents.js');
 
     fbq('init', '968048132755163');
-
-    // Visita inicial
     fbq('track', 'PageView');
 
-    // Usuário engajado (3s)
-    setTimeout(function() {
-      fbq('track', 'ViewContent', { content_name: 'Início da Visita' });
-    }, 3000);
-    </script>
+    // Rastreamento de Eventos Personalizados
+    document.addEventListener('DOMContentLoaded', function() {
+        // Função para gerar ID único para deduplicação
+        const genEvtId = () => 'ev_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 
+        // Usuário Engajado (3 segundos)
+        setTimeout(() => {
+            fbq('track', 'ViewContent', { content_name: 'Início da Visita' }, { eventID: genEvtId() });
+        }, 3000);
+
+        // Rastreamento de Scroll (50% da página)
+        let scrollTracked = false;
+        window.addEventListener('scroll', () => {
+            if (!scrollTracked && window.scrollY > (document.documentElement.scrollHeight / 2)) {
+                fbq('track', 'ViewContent', { content_name: 'Leitura da Página' }, { eventID: genEvtId() });
+                scrollTracked = true;
+            }
+        });
+
+        // Rastreamento de Cliques em Botões (WhatsApp e Agendamento)
+        const trackButtons = document.querySelectorAll('.cta-button, .service-button, .contact-link[href*="wa.me"], .footer-social-link[href*="wa.me"]');
+        trackButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const eid = genEvtId();
+                fbq('track', 'Contact', { content_category: 'WhatsApp', content_name: 'Agendar Consulta' }, { eventID: eid });
+                fbq('track', 'Lead', { value: 0, currency: 'BRL' }, { eventID: eid });
+            });
+        });
+
+        // Cliques no Instagram
+        document.querySelectorAll('a[href*="instagram.com"], a[href*="ig.me"]').forEach(link => {
+            link.addEventListener('click', () => {
+                fbq('track', 'FindLocation', { content_name: 'Instagram' }, { eventID: genEvtId() });
+            });
+        });
+    });
+    </script>
     <noscript>
-    <img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=968048132755163&ev=PageView&noscript=1"/>
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=968048132755163&ev=PageView&noscript=1"/>
     </noscript>
     <!-- 🔥 FIM PIXEL -->
 
@@ -45,14 +73,12 @@
     
     <div class="mystical-bg"></div>
     
-    <!-- Efeito de brilho místico -->
     <div class="mystical-glow">
         <div class="mystical-orb orb1"></div>
         <div class="mystical-orb orb2"></div>
         <div class="mystical-orb orb3"></div>
     </div>
     
-    <!-- Barra de navegação fixa -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
@@ -68,13 +94,12 @@
                 <li class="nav-item"><a href="#services" class="nav-link">Serviços</a></li>
                 <li class="nav-item"><a href="#about" class="nav-link">Sobre</a></li>
                 <li class="nav-item"><a href="#testimonials" class="nav-link">Depoimentos</a></li>
-                <li class="nav-item"><a href="https://naianjostarot.netlify.app/#contato" class="nav-link">Contato</a></li>
+                <li class="nav-item"><a href="#contato" class="nav-link">Contato</a></li>
             </ul>
         </div>
     </nav>
     
     <div class="container">
-        <!-- Seção Inicial -->
         <section id="home" class="section hero-section">
             <header>
                 <div class="logo-container">
@@ -84,38 +109,26 @@
             
             <main>
                 <h1 class="title">Inaiara Anjos</h1>
-                
                 <div class="title-ornament">
                     <span class="ornament-line"></span>
                     <span class="ornament-symbol"><i class="fas fa-gem"></i></span>
                     <span class="ornament-line"></span>
                 </div>
-                
                 <h2 class="subtitle">Taróloga</h2>
-                
                 <div class="description">
                     <p>Descubra os caminhos do seu destino<br>através de consultas místicas que<br>revelam sua jornada e potencial.</p>
                 </div>
-                
                 <div class="button-container">
                     <a href="#services" class="scroll-button">Explorar Serviços</a>
                     <a href="https://wa.me/5571999170206?text=Olá%20Inaiara!%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="cta-button">Agendar Consulta</a>
                 </div>
-                
                 <div class="scroll-indicator">
-                    <div class="mouse">
-                        <div class="wheel"></div>
-                    </div>
-                    <div class="arrow">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                    <div class="mouse"><div class="wheel"></div></div>
+                    <div class="arrow"><span></span><span></span><span></span></div>
                 </div>
             </main>
         </section>
         
-        <!-- Seção de Serviços Detalhados -->
         <section id="services" class="section services-section">
             <div class="section-header">
                 <h2 class="section-title">Serviços</h2>
@@ -126,29 +139,22 @@
                 </div>
                 <p class="section-subtitle">Conheça as consultas místicas que podem iluminar seu caminho</p>
             </div>
-            
             <div class="services-container">
-                <!-- Tarot -->
                 <div class="service-detailed">
                     <div class="service-image">
-                        <div class="service-icon-large">
-                            <i class="fas fa-moon"></i>
-                        </div>
+                        <div class="service-icon-large"><i class="fas fa-moon"></i></div>
                     </div>
                     <div class="service-info">
                         <h3>Tarot</h3>
                         <div class="service-description">
-                            <p>O Tarot é uma poderosa ferramenta de autoconhecimento e orientação espiritual que utiliza um conjunto de 78 cartas repletas de simbolismos. Através da interpretação intuitiva dessas cartas, é possível obter insights valiosos sobre situações presentes, influências passadas e tendências futuras.</p>
-                            <p>Em uma consulta de Tarot, as cartas funcionam como um espelho da sua energia e consciência, revelando aspectos que muitas vezes estão ocultos ou que você ainda não conseguiu perceber claramente.</p>
+                            <p>O Tarot é uma poderosa ferramenta de autoconhecimento e orientação espiritual que utiliza um conjunto de 78 cartas repletas de simbolismos.</p>
                         </div>
                         <div class="service-benefits">
                             <h4>Benefícios:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle"></i> Clareza em momentos de dúvida e incerteza</li>
-                                <li><i class="fas fa-check-circle"></i> Orientação para tomada de decisões importantes</li>
-                                <li><i class="fas fa-check-circle"></i> Compreensão de padrões comportamentais</li>
-                                <li><i class="fas fa-check-circle"></i> Insights sobre relacionamentos e conexões</li>
-                                <li><i class="fas fa-check-circle"></i> Identificação de bloqueios energéticos</li>
+                                <li><i class="fas fa-check-circle"></i> Clareza em momentos de dúvida</li>
+                                <li><i class="fas fa-check-circle"></i> Orientação para decisões</li>
+                                <li><i class="fas fa-check-circle"></i> Compreensão de padrões</li>
                             </ul>
                         </div>
                         <div class="service-cta">
@@ -159,64 +165,43 @@
             </div>
         </section>
         
-       <!-- Seção Sobre -->
-<section id="about" class="section about-section">
-    <div class="section-header">
-        <h2 class="section-title">Sobre Inaiara Anjos</h2>
-        <div class="title-ornament">
-            <span class="ornament-line"></span>
-            <span class="ornament-symbol"><i class="fas fa-star"></i></span>
-            <span class="ornament-line"></span>
-        </div>
-    </div>
-    
-    <div class="about-container">
-        <div class="about-image">
-            <div class="about-image-frame">
-                <div class="about-image-placeholder">
-                    <img src="images/perfil.png" alt="Inaiara Anjos" class="about-image-img">
+        <section id="about" class="section about-section">
+            <div class="section-header">
+                <h2 class="section-title">Sobre Inaiara Anjos</h2>
+                <div class="title-ornament">
+                    <span class="ornament-line"></span>
+                    <span class="ornament-symbol"><i class="fas fa-star"></i></span>
+                    <span class="ornament-line"></span>
                 </div>
             </div>
-        </div>
-        
-        <div class="about-content">
-            <p class="about-quote">"Sou Inaiara Anjos, taróloga. Acredito no poder do autoconhecimento e na sabedoria ancestral para guiar nossos caminhos."</p>
-            
-            <p class="about-quote">"Com o Tarot, ofereço orientações que iluminam decisões e fortalecem a confiança em si mesmo."</p>
-            
-            <p class="about-quote">"Aqui, cada consulta é um espaço sagrado de acolhimento e transformação."</p>
-            
-            <div class="about-values">
-                <div class="value-item">
-                    <div class="value-icon">
-                        <i class="fas fa-heart"></i>
+            <div class="about-container">
+                <div class="about-image">
+                    <div class="about-image-frame">
+                        <div class="about-image-placeholder">
+                            <img src="images/perfil.png" alt="Inaiara Anjos" class="about-image-img">
+                        </div>
                     </div>
-                    <h4>Acolhimento</h4>
-                    <p>Cada encontro é um momento sagrado de escuta e compreensão genuína.</p>
                 </div>
-                
-                <div class="value-item">
-                    <div class="value-icon">
-                        <i class="fas fa-star"></i>
+                <div class="about-content">
+                    <p class="about-quote">"Sou Inaiara Anjos, taróloga. Acredito no poder do autoconhecimento."</p>
+                    <div class="about-values">
+                        <div class="value-item">
+                            <div class="value-icon"><i class="fas fa-heart"></i></div>
+                            <h4>Acolhimento</h4>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon"><i class="fas fa-star"></i></div>
+                            <h4>Conexão</h4>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
+                            <h4>Transformação</h4>
+                        </div>
                     </div>
-                    <h4>Conexão</h4>
-                    <p>Um elo entre você e as energias que guiam seu caminho de evolução.</p>
-                </div>
-                
-                <div class="value-item">
-                    <div class="value-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h4>Transformação</h4>
-                    <p>Cada consulta é uma oportunidade de despertar e renovar sua jornada.</p>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-        
-        <!-- Seção de Depoimentos -->
         <section id="testimonials" class="section testimonials-section">
             <div class="section-header">
                 <h2 class="section-title">Depoimentos</h2>
@@ -225,59 +210,20 @@
                     <span class="ornament-symbol"><i class="fas fa-comment-dots"></i></span>
                     <span class="ornament-line"></span>
                 </div>
-                <p class="section-subtitle">O que dizem aqueles que já vivenciaram a experiência mística</p>
             </div>
-            
             <div class="testimonials-container">
                 <div class="testimonial-card">
-                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
-                    <p class="testimonial-text">Inaiara, você me passou muita confiança e eu adorei falar com você. Seu atendimento é ótimo e com toda certeza vou falar com você mais vezes nem que seja pra pedir conselhos. Eu gostei demais.</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-info">
-                            <h4>Jamile</h4>
-                        </div>
-                    </div>
+                    <p class="testimonial-text">"Inaiara, você me passou muita confiança. Adorei!"</p>
+                    <h4>Jamile</h4>
                 </div>
-
                 <div class="testimonial-card">
-                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
-                    <p class="testimonial-text">Inaiara 🦋♥️ Quero expressar minha profunda gratidão pelo atendimento tão acolhedor e iluminado que você me proporcionou. ✨ Suas orientações foram essenciais para me dar clareza, confiança e tranquilidade na caminhada rumo à conquista da minha casa própria.</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-info">
-                            <h4>Inara</h4>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
-                    <p class="testimonial-text">Achei suas mãos para as cartas muito boa, sério. Você captou super bem a energia da situação, principalmente esse lance das incertezas. A leitura fluiu muito natural e você trouxe os recados do jeito certo, leve mas bem pulso firme. Amei demais. Tenha muito axé na sua caminhada. ❤️</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-info">
-                            <h4>Luísa</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
-                    <p class="testimonial-text">Amiga, você me passou muita confiança e eu adorei falar com você. Seu atendimento é ótimo e com toda certeza vou falar com você mais vezes nem que seja pra pedir conselhos. Eu gostei demais.</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-info">
-                            <h4>Ananda</h4>
-                        </div>
-                    </div>
+                    <p class="testimonial-text">"Atendimento acolhedor e iluminado. Gratidão!"</p>
+                    <h4>Inara</h4>
                 </div>
             </div>
-                        
-            
-            <!-- Novos depoimentos adicionados dinamicamente -->
-            <div class="new-testimonials-container" id="newTestimonials">
-                <!-- Novos depoimentos serão adicionados aqui via JavaScript -->
-            </div>
+            <div class="new-testimonials-container" id="newTestimonials"></div>
         </section>
         
-        <!-- Seção de Contato -->
         <section id="contato" class="section contact-section">
             <div class="section-header">
                 <h2 class="section-title">Contato</h2>
@@ -286,82 +232,51 @@
                     <span class="ornament-symbol"><i class="fas fa-envelope"></i></span>
                     <span class="ornament-line"></span>
                 </div>
-                <p class="section-subtitle">Entre em contato para agendar sua consulta ou tirar dúvidas</p>
             </div>
-            
             <div class="contact-container">
                 <div class="contact-info">
                     <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
+                        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
                         <div class="contact-text">
                             <h4>WhatsApp</h4>
                             <p>71 9 9917 0206</p>
-                            <a href="https://wa.me/5571999170206?text=Olá%20Inaiara!%20Gostaria%20de%20saber%20mais%20sobre%20suas%20consultas." target="_blank" class="contact-link">Enviar Mensagem</a>
+                            <a href="https://wa.me/5571999170206?text=Olá%20Inaiara!" target="_blank" class="contact-link">Enviar Mensagem</a>
                         </div>
                     </div>
-                    
                     <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
+                        <div class="contact-icon"><i class="fab fa-instagram"></i></div>
                         <div class="contact-text">
                             <h4>Instagram</h4>
                             <p>@naianjos.tarot</p>
-                            <a href="https://ig.me/m/naianjos.tarot?text=Olá!%20Vi%20seu%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20suas%20consultas." target="_blank" class="contact-link">Enviar Direct</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="far fa-clock"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Horário de Atendimento</h4>
-                            <p>Segunda a Domingo: 8:00h às 00:00h</p>
+                            <a href="https://ig.me/m/naianjos.tarot" target="_blank" class="contact-link">Enviar Direct</a>
                         </div>
                     </div>
                 </div>
-                
                 <div class="contact-cta">
-                    <h3>Pronto para descobrir o que o universo reserva para você?</h3>
-                    <a href="https://wa.me/5571999170206?text=Olá%20Inaiara!%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="cta-button large">Agendar Minha Consulta</a>
+                    <h3>Pronto para descobrir seu destino?</h3>
+                    <a href="https://wa.me/5571999170206?text=Olá%20Inaiara!" target="_blank" class="cta-button large">Agendar Minha Consulta</a>
                 </div>
             </div>
         </section>
         
         <footer class="footer">
-            <div class="footer-content">
-                </div>
-                <div class="footer-text">
-                    <p>&copy; 2025 Inaiara Anjos</p>
-                    <p>Consultas místicas para orientação e autoconhecimento</p>
-                    
-                </div>
-                <div class="footer-social">
-                    <a href="https://instagram.com/naianjos.tarot" target="_blank" class="footer-social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/5571999170206" target="_blank" class="footer-social-link"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            
-        
-            <div class="mystical-elements">
-                <div class="stars star1"></div>
-                <div class="stars star2"></div>
-                <div class="stars star3"></div>
+            <div class="footer-text">
+                <p>&copy; 2025 Inaiara Anjos</p>
+                <p>Desenvolvido por Cleiton Neri</p>
             </div>
-            
-            <a href="#home" class="scroll-top">
-                <i class="fas fa-chevron-up"></i>
-            </a>
-             <p>Desenvolvido por Cleiton Neri</p>
+            <div class="footer-social">
+                <a href="https://instagram.com/naianjos.tarot" target="_blank" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5571999170206" target="_blank" class="footer-social-link"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <div class="mystical-elements">
+                <div class="stars star1"></div><div class="stars star2"></div><div class="stars star3"></div>
+            </div>
+            <a href="#home" class="scroll-top"><i class="fas fa-chevron-up"></i></a>
         </footer>
     </div>
   
     <script src="js/particles.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/script.js"></script>
-    <!-- Script de Eventos do Pixel -->
-    <script src="js/pixel-events.js"></script>
 </body>
 </html>
